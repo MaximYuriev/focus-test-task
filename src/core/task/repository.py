@@ -1,3 +1,4 @@
+import uuid
 from abc import ABC, abstractmethod
 
 from sqlalchemy import select
@@ -19,7 +20,7 @@ class TaskRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_task_by_id(self, task_id: int) -> Task:
+    async def get_task_by_id(self, task_id: uuid.UUID) -> Task:
         pass
 
 
@@ -40,7 +41,7 @@ class SQLAlchemyTaskRepository(TaskRepository):
 
         return [model.to_entity() for model in model_list.all()]
 
-    async def get_task_by_id(self, task_id: int) -> Task:
+    async def get_task_by_id(self, task_id: uuid.UUID) -> Task:
         query = select(TaskModel).where(TaskModel.task_id == task_id)
         model = await self._session.scalar(query)
 
