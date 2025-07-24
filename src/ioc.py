@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessi
 
 from src.config import Config, config
 from src.core.task.repository import TaskRepository, SQLAlchemyTaskRepository
-from src.core.task.use_cases import CreateTaskUseCase
+from src.core.task.use_cases import CreateTaskUseCase, GetTaskListUseCase
 
 
 class SQLAlchemyProvider(Provider):
@@ -37,6 +37,7 @@ class TaskProvider(Provider):
     task_repository = provide(SQLAlchemyTaskRepository, provides=TaskRepository)
 
     create_task_use_case = provide(CreateTaskUseCase)
+    get_task_list_use_case = provide(GetTaskListUseCase)
 
 
 container = make_async_container(

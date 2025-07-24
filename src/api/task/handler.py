@@ -1,10 +1,13 @@
+from typing import Annotated
+
 from dishka import FromDishka
 from dishka.integrations.fastapi import inject
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
-from src.api.task.schemas import CreateTaskSchema, TaskResponseSchema
+from src.api.task.schemas import CreateTaskSchema, TaskResponseSchema, GetTaskListSchemaFilter
 from src.core.task.dto import CreateTaskDTO
-from src.core.task.use_cases import CreateTaskUseCase
+from src.core.task.filters import GetTaskListFilter
+from src.core.task.use_cases import CreateTaskUseCase, GetTaskListUseCase
 
 task_router = APIRouter(prefix="/tasks", tags=["Task"])
 
@@ -24,3 +27,22 @@ async def create_task_handler(
     task = await use_case(dto)
 
     return TaskResponseSchema.model_validate(task, from_attributes=True)
+
+
+@task_router.get("/")
+@inject
+async def get_task_list_handler(
+        filters: Annotated[GetTaskListSchemaFilter, Query()],
+        use_case: FromDishka[GetTaskListUseCase],
+) -> list[TaskResponseSchema]:
+    filters = GetTaskListFilter(
+        status=filters.status,
+    )
+    task_list = await use_case(filters)
+
+    return [
+        TaskResponseSchema.model_validate(
+            task,
+            from_attributes=True,
+        ) for task in task_list
+    ]
