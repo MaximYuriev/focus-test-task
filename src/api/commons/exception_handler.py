@@ -17,7 +17,7 @@ def register_exception_handler(app: FastAPI) -> None:
         )
 
     @app.exception_handler(ApplicationException)
-    def register_handler_for_application_exception(
+    def application_exception_handler(
             request: Request,
             exception: ApplicationException,
     ) -> JSONResponse:
