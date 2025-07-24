@@ -1,3 +1,5 @@
+import uuid
+
 from src.core.task.dto import CreateTaskDTO
 from src.core.task.entity import Task, TaskStatus
 from src.core.task.filters import GetTaskListFilter
@@ -26,3 +28,11 @@ class GetTaskListUseCase:
 
     async def __call__(self, filters: GetTaskListFilter) -> list[Task]:
         return await self._task_repository.get_task_list(filters)
+
+
+class GetTaskByIdUseCase:
+    def __init__(self, task_repository: TaskRepository):
+        self._task_repository = task_repository
+
+    async def __call__(self, task_id: uuid.UUID) -> Task:
+        return await self._task_repository.get_task_by_id(task_id)
