@@ -65,3 +65,5 @@ class UpdateTaskUseCase:
                 setattr(task, key, value)
 
         await self._task_repository.update_task(task)
+
+        return task
