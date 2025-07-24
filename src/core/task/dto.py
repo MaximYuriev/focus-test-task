@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from src.core.task.entity import TaskStatus
-
 
 @dataclass(frozen=True, eq=False)
 class CreateTaskDTO:
@@ -14,4 +12,4 @@ class CreateTaskDTO:
 class UpdateTaskDTO:
     title: str | None
     description: str | None
-    status: TaskStatus | None
+    status: str | None
