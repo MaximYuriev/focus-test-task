@@ -27,6 +27,10 @@ class TaskRepository(ABC):
     async def delete_task(self, task: Task) -> None:
         pass
 
+    @abstractmethod
+    async def update_task(self, task: Task) -> None:
+        pass
+
 
 class SQLAlchemyTaskRepository(TaskRepository):
     def __init__(self, session: AsyncSession) -> None:
@@ -57,4 +61,9 @@ class SQLAlchemyTaskRepository(TaskRepository):
     async def delete_task(self, task: Task) -> None:
         stmt = delete(TaskModel).where(TaskModel.task_id == task.task_id)
         await self._session.execute(stmt)
+        await self._session.commit()
+
+    async def update_task(self, task: Task) -> None:
+        model = TaskModel.from_entity(task)
+        await self._session.merge(model)
         await self._session.commit()

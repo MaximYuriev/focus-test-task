@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, async_sessi
 
 from src.config import Config, config
 from src.core.task.repository import TaskRepository, SQLAlchemyTaskRepository
-from src.core.task.use_cases import CreateTaskUseCase, GetTaskListUseCase, GetTaskByIdUseCase, DeleteTaskUseCase
+from src.core.task.use_cases import CreateTaskUseCase, GetTaskListUseCase, GetTaskByIdUseCase, DeleteTaskUseCase, \
+    UpdateTaskUseCase
 
 
 class SQLAlchemyProvider(Provider):
@@ -40,6 +41,7 @@ class TaskProvider(Provider):
     get_task_list_use_case = provide(GetTaskListUseCase)
     get_task_by_id_use_case = provide(GetTaskByIdUseCase)
     delete_task_use_case = provide(DeleteTaskUseCase)
+    update_task_use_case = provide(UpdateTaskUseCase)
 
 
 container = make_async_container(
