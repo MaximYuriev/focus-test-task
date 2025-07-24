@@ -36,3 +36,14 @@ class GetTaskByIdUseCase:
 
     async def __call__(self, task_id: uuid.UUID) -> Task:
         return await self._task_repository.get_task_by_id(task_id)
+
+class DeleteTaskUseCase:
+    def __init__(self, task_repository: TaskRepository):
+        self._task_repository = task_repository
+
+    async def __call__(self, task_id: uuid.UUID) -> Task:
+        task = await self._task_repository.get_task_by_id(task_id)
+
+        await self._task_repository.delete_task(task)
+
+        return task

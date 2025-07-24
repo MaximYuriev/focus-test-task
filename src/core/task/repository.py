@@ -1,7 +1,7 @@
 import uuid
 from abc import ABC, abstractmethod
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.task.entity import Task
@@ -21,6 +21,10 @@ class TaskRepository(ABC):
 
     @abstractmethod
     async def get_task_by_id(self, task_id: uuid.UUID) -> Task:
+        pass
+
+    @abstractmethod
+    async def delete_task(self, task: Task) -> None:
         pass
 
 
@@ -49,3 +53,8 @@ class SQLAlchemyTaskRepository(TaskRepository):
             raise TaskNotFoundException(task_id)
 
         return model.to_entity()
+
+    async def delete_task(self, task: Task) -> None:
+        stmt = delete(TaskModel).where(TaskModel.task_id == task.task_id)
+        await self._session.execute(stmt)
+        await self._session.commit()
