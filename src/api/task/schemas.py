@@ -21,7 +21,7 @@ class CreateTaskSchema(BaseModel):
 
 
 class GetTaskListSchemaFilter(BaseModel):
-    status: TaskStatus | None = Field(default=None, alias="status")
+    status: TaskStatus | None = None
 
     @field_validator("status", mode='after')
     @classmethod
@@ -29,3 +29,9 @@ class GetTaskListSchemaFilter(BaseModel):
         if isinstance(v, TaskStatus):
             return v.value
         return v
+
+
+class UpdateTaskSchema(BaseModel):
+    title: str | None = None
+    description: str | None = None
+    status: TaskStatus | None = None
