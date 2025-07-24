@@ -7,7 +7,10 @@ from src.ioc import container
 
 
 def create_app() -> FastAPI:
-    app = FastAPI()
+    app = FastAPI(
+        title="Focus Test Task",
+        debug=True,
+    )
 
     register_exception_handler(app)
 
