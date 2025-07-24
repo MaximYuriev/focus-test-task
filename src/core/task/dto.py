@@ -7,7 +7,7 @@ from src.core.task.entity import TaskStatus
 class CreateTaskDTO:
     title: str
     description: str | None
-    status: str
+    status: TaskStatus
 
 
 @dataclass(frozen=True, eq=False)

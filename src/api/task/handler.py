@@ -23,7 +23,7 @@ async def create_task_handler(
     dto = CreateTaskDTO(
         title=schema.title,
         description=schema.description,
-        status=schema.status.value,
+        status=schema.status,
     )
 
     task = await use_case(dto)

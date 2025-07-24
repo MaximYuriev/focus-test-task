@@ -15,7 +15,7 @@ class CreateTaskUseCase:
         task = Task(
             title=create_task_dto.title,
             description=create_task_dto.description,
-            status=TaskStatus(create_task_dto.status),
+            status=create_task_dto.status,
         )
 
         await self._task_repository.add_task(task)
