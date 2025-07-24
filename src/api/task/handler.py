@@ -8,7 +8,7 @@ from fastapi import APIRouter, Query
 from src.api.task.schemas import CreateTaskSchema, TaskResponseSchema, GetTaskListSchemaFilter
 from src.core.task.dto import CreateTaskDTO
 from src.core.task.filters import GetTaskListFilter
-from src.core.task.use_cases import CreateTaskUseCase, GetTaskListUseCase, GetTaskByIdUseCase
+from src.core.task.use_cases import CreateTaskUseCase, GetTaskListUseCase, GetTaskByIdUseCase, DeleteTaskUseCase
 
 task_router = APIRouter(prefix="/tasks", tags=["Task"])
 
@@ -57,4 +57,14 @@ async def get_task_by_id_handler(
 ) -> TaskResponseSchema:
     task = await use_case(task_id)
 
+    return TaskResponseSchema.model_validate(task, from_attributes=True)
+
+
+@task_router.delete("/{task_id}")
+@inject
+async def delete_task_handler(
+        task_id: uuid.UUID,
+        use_case: FromDishka[DeleteTaskUseCase],
+) -> TaskResponseSchema:
+    task = await use_case(task_id)
     return TaskResponseSchema.model_validate(task, from_attributes=True)
