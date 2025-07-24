@@ -1,5 +1,6 @@
 from src.core.task.dto import CreateTaskDTO
 from src.core.task.entity import Task, TaskStatus
+from src.core.task.filters import GetTaskListFilter
 from src.core.task.repository import TaskRepository
 
 
@@ -17,3 +18,11 @@ class CreateTaskUseCase:
         await self._task_repository.add_task(task)
 
         return task
+
+
+class GetTaskListUseCase:
+    def __init__(self, task_repository: TaskRepository):
+        self._task_repository = task_repository
+
+    async def __call__(self, filters: GetTaskListFilter) -> list[Task]:
+        return await self._task_repository.get_task_list(filters)
